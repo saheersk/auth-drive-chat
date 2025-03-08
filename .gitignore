@@ -1,0 +1,119 @@
+# Byte-compiled / optimized / packaged files
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Virtual environment
+venv/
+env/
+*.env
+*.venv
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Django / Database
+*.sqlite3
+db.sqlite3
+db.sqlite3-journal
+media/
+staticfiles/
+*.log
+
+# Migrations
+**/migrations/*
+!**/migrations/__init__.py
+
+# Django secret key file (if stored separately)
+secret_key.txt
+
+# Local settings
+local_settings.py
+
+# VS Code
+.vscode/
+
+# IDEs
+.idea/
+*.iml
+
+# MacOS
+.DS_Store
+
+# Node.js (if frontend exists)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Docker
+*.pid
+*.tar
+__pycache__/
+*.whl
+.dockerignore
+docker-compose.override.yml
+
+# Testing
+.coverage
+htmlcov/
+*.cover
+nosetests.xml
+coverage.xml
+*.mo
+*.pot
+test-results/
+junit.xml
+
+# Celery beat schedule file
+celerybeat-schedule
+
+# Gunicorn
+gunicorn-error.log
+
+# PyCharm
+*.pyc
+*.pyo
+*.pyd
+*.idea/
+
+# MyPy
+.mypy_cache/
+
+# AWS / GCP / Azure / Cloud Storage
+.env*
+*.bak
+*.swp
+*.swo
+.envrc
+.env.local
+.env.development
+.env.production
+.env.testing
+
+# Logs and Debugging
+logs/
+*.log
+*.out
+*.err
+
+# Compiled files
+*.so
+*.dll
+*.dylib
+
+# Python egg info
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebook
+.ipynb_checkpoints/
+
+# Redis
+dump.rdb
+
+# Supervisor logs
+supervisord.log
+supervisord.pid
+
+
