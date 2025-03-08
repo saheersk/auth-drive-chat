@@ -7,7 +7,7 @@ __pycache__/
 # Virtual environment
 venv/
 env/
-*.env
+.env
 *.venv
 pip-log.txt
 pip-delete-this-directory.txt
@@ -80,7 +80,7 @@ gunicorn-error.log
 .mypy_cache/
 
 # AWS / GCP / Azure / Cloud Storage
-.env*
+.env
 *.bak
 *.swp
 *.swo
