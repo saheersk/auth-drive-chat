@@ -14,7 +14,18 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+]
+
+CORS_ALLOW_ALL_ORIGINS = False  # Security: Only allow specific origins
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
+
+# If your frontend makes credentialed requests (like authentication cookies):
+CORS_ALLOW_CREDENTIALS = True
 
 
 INSTALLED_APPS = [
@@ -24,9 +35,17 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    "rest_framework",
+    "rest_framework.authtoken",
+    "corsheaders",
+
+    "user",
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -97,6 +116,8 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = 'user.User'
+
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
@@ -106,3 +127,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
+GOOGLE_REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI')
