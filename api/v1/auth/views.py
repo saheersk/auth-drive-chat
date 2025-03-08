@@ -9,6 +9,7 @@ from google.oauth2 import id_token
 from google.auth.transport import requests
 from rest_framework.authtoken.models import Token
 
+
 User = get_user_model()
 
 
@@ -21,13 +22,13 @@ def google_auth_callback(request):
         if not token:
             return JsonResponse({"error": "No token provided"}, status=400)
 
-        id_info = id_token.verify_oauth2_token(token, requests.Request(),
-                                               settings.GOOGLE_CLIENT_ID)
+        idinfo = id_token.verify_oauth2_token(token, requests.Request(),
+                                              settings.GOOGLE_CLIENT_ID)
 
-        google_id = id_info["sub"]
-        email = id_info["email"]
-        username = id_info.get("name", "")
-        profile_image = id_info.get("picture", "")
+        google_id = idinfo["sub"]
+        email = idinfo["email"]
+        username = idinfo.get("name", "")
+        profile_image = idinfo.get("picture", "")
 
         user, created = User.objects.get_or_create(
             google_id=google_id,

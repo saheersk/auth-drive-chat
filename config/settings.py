@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "corsheaders",
 
     "user",
+    "drive"
 ]
 
 MIDDLEWARE = [
@@ -132,3 +133,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
 GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 GOOGLE_REDIRECT_URI = os.getenv('GOOGLE_REDIRECT_URI')
+
+DRIVE_CLIENT_ID = os.getenv('DRIVE_CLIENT_ID')
+DRIVE_CLIENT_SECRET = os.getenv('DRIVE_CLIENT_SECRET')
+DRIVE_REDIRECT_URI = os.getenv('DRIVE_REDIRECT_URI')
