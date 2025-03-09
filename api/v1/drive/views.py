@@ -29,8 +29,28 @@ def google_drive_auth(request):
     )
     return redirect(auth_url)
 
+from django.contrib.auth.models import AnonymousUser
+from rest_framework.authtoken.models import Token
+
 
 def google_drive_callback(request):
+    # Get token from headers
+    auth_header = request.headers.get("Authorization", "")
+    if not auth_header.startswith("Bearer "):
+        return JsonResponse({"error": "Missing or invalid Authorization header"}, status=401)
+
+    token_key = auth_header.split(" ")[1]
+    
+    try:
+        token = Token.objects.get(key=token_key)
+        user = token.user  # Get user from token
+    except Token.DoesNotExist:
+        return JsonResponse({"error": "Invalid token"}, status=401)
+
+    if isinstance(user, AnonymousUser) or not user.is_authenticated:
+        return JsonResponse({"error": "User is not authenticated"}, status=401)
+
+    # Continue with Google Drive auth flow
     code = request.GET.get("code")
     if not code:
         return JsonResponse({"error": "Authorization code not provided"},
@@ -38,32 +58,31 @@ def google_drive_callback(request):
 
     data = {
         "code": code,
-        "client_id": settings.GOOGLE_CLIENT_ID,
+        "client_id": settings.DRIVE_CLIENT_ID,
         "client_secret": settings.DRIVE_CLIENT_SECRET,
-        "redirect_uri": settings.GOOGLE_DRIVE_REDIRECT_URI,
+        "redirect_uri": settings.DRIVE_REDIRECT_URI,
         "grant_type": "authorization_code",
     }
 
-    response = requests.post(GOOGLE_DRIVE_TOKEN_URL, data=data)
+    headers = {"Content-Type": "application/x-www-form-urlencoded"}
+    response = requests.post(GOOGLE_DRIVE_TOKEN_URL, data=data,
+                             headers=headers)
     token_data = response.json()
 
     if "access_token" not in token_data:
-        return JsonResponse({"error": "Failed to obtain access token"},
-                            status=400)
+        return JsonResponse({"error": token_data.get("error", "Failed to obtain access token")}, status=400)
 
-    user = request.user
+    # Save tokens in the database
     GoogleDriveToken.objects.update_or_create(
         user=user,
         defaults={
             "access_token": token_data["access_token"],
             "refresh_token": token_data.get("refresh_token", ""),
-            "expires_at": now() + datetime.timedelta(
-                seconds=token_data["expires_in"]),
+            "expires_at": now() + datetime.timedelta(seconds=token_data["expires_in"]),
         },
     )
 
     return JsonResponse({"message": "Google Drive connected successfully"})
-
 
 GOOGLE_DRIVE_UPLOAD_URL = "https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart"
 

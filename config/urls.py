@@ -9,6 +9,8 @@ urlpatterns = [
 
     path('api/v1/auth/', include("api.v1.auth.urls")),
     path('api/v1/drive/', include("api.v1.drive.urls")),
+
+    path('', include('social_django.urls', namespace='social')),
 ]
 
 if settings.DEBUG:
